@@ -39,7 +39,7 @@ import {filterImageFromURL, deleteLocalFiles} from './util/util.js';
 
   app.get( "/filteredimage", async (req, res) => {
     let { image_url } = req.query;
-    if (!image_url) return res.status(400).send('Error: image_url is empty');
+    if (!image_url) return res.status(422).send('Error: image_url is empty');
 
     const filter_img_res = await filterImageFromURL(image_url);
     try {
@@ -47,7 +47,8 @@ import {filterImageFromURL, deleteLocalFiles} from './util/util.js';
         deleteLocalFiles([filter_img_res]);
       });
     } catch (err) {
-      res.status(400).send('Error: ' + err)
+      console.log('Error', err);
+      res.status(500).send('Error: ' + err)
     }
   });
 
